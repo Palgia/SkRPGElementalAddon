@@ -10,12 +10,20 @@ on load:
         loop all of the currently loaded yaml files:
             unload yaml loop-value-1
         #Clearing everything
+        delete {skrpgelementaladdon.main-config::*}
         delete {skrpgelementaladdon.config.database::*}
         #
         #Config loading
         #
         send "&a[SkRPGElementalAddon] &fLoading config..." to console
         load yaml "plugins/SkRPGElementalAddon/config.yml" as "config"
+
+        #remove-damage-if-weak
+        set {_remove-damage-if-weak} to yaml value "remove-damage-if-weak" from "config"
+        if {_remove-damage-if-weak} is set:
+            set {skrpgelementaladdon.main-config::remove-damage-if-weak} to {_remove-damage-if-weak}
+        else:
+            set {skrpgelementaladdon.main-config::remove-damage-if-weak} to true
 
         #Load all mobs
         loop yaml node keys "mobs" from "config":
@@ -123,10 +131,11 @@ on damage of living entity:
                     if {skrpgelementaladdon.config.database::%{_mythic_id}%::weaknesses::%loop-value%::modifier} is set:
                         add {skrpgelementaladdon.config.database::%{_mythic_id}%::weaknesses::%loop-value%::modifier} to damage
             #Check defenses
-            if {skrpgelementaladdon.config.database::%{_mythic_id}%::defenses::*} is set:
-                loop {skrpgelementaladdon.config.database::%{_mythic_id}%::defenses::*}:
-                    set {_element_stat} to skRPGgetGlobalStatAmount(attacker, "%loop-value%_DAMAGE")
-                    remove {_element_stat} from damage
-                    #If modifier is set:
-                    if {skrpgelementaladdon.config.database::%{_mythic_id}%::defenses::%loop-value%::modifier} is set:
-                        remove {skrpgelementaladdon.config.database::%{_mythic_id}%::defenses::%loop-value%::modifier} from damage
+            if {skrpgelementaladdon.main-config::remove-damage-if-weak} is true:
+                if {skrpgelementaladdon.config.database::%{_mythic_id}%::defenses::*} is set:
+                    loop {skrpgelementaladdon.config.database::%{_mythic_id}%::defenses::*}:
+                        set {_element_stat} to skRPGgetGlobalStatAmount(attacker, "%loop-value%_DAMAGE")
+                        remove {_element_stat} from damage
+                        #If modifier is set:
+                        if {skrpgelementaladdon.config.database::%{_mythic_id}%::defenses::%loop-value%::modifier} is set:
+                            remove {skrpgelementaladdon.config.database::%{_mythic_id}%::defenses::%loop-value%::modifier} from damage

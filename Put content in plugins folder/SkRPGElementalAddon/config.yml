@@ -2,6 +2,12 @@
 #This file lets you define settings for SkRPGElementalAddon.
 #
 
+#This setting ensures that the elemental damage from your equipment is deducted from your initial damage if your enemy is resistant to that element. 
+#Setting the value to 'false' means no damage will be removed.
+remove-damage-if-weak: true
+
+
+
 #List of mobs with their weaknesses and strengths. Add as many as you want!
 #
 #HOW IT WORKS ?
