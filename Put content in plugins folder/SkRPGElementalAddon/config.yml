@@ -1,0 +1,50 @@
+#
+#This file lets you define settings for SkRPGElementalAddon.
+#
+
+#List of mobs with their weaknesses and strengths. Add as many as you want!
+#
+#HOW IT WORKS ?
+#
+#Thanks to SKRpg and SkRpgItemsAddon, add elemental statistics added by this addon to your equipment: EARTH_DAMAGE, FIRE_DAMAGE, WATER_DAMAGE, THUNDER_DAMAGE.
+#
+#Example:
+#If equipment has +25 Earth Damage, it will deal +25 damage to enemies with Earth as a weakness. 
+#But if this equipment is used against a monster with resistance towards this element, the damage will be reduced by 25.
+
+mobs:
+  angrysludge:
+
+    #Example of basic configuration
+
+    #MythicMob ID
+    mythic_id: "AngrySludge"
+    #List of weaknesses
+    weaknesses:
+      - FIRE
+    #List of defenses
+    defenses:
+      - EARTH
+
+
+  skeletonking:
+
+    #Example of advanced configuration
+
+    #MythicMob ID
+    mythic_id: "SkeletonKing"
+    #List of weaknesses
+    weaknesses:
+      #If the earth element is detected on the player's equipment, it will add 25 damage
+      #These damages are added on top of those offered by your elemental damage (for example, if you have +25 Earth Damage, it will inflict +50 in total).
+      - EARTH:25
+      - THUNDER
+    #List of defenses
+    defenses:
+      #If the fire element is detected on the player's equipment, it will remove 10 damage
+      #These damages are subtracted in addition to those already deducted by your ineffective elemental damage (for example, if you have +25 Fire Damage, it will inflict -35 in total).
+      - FIRE:-10
+    #List of elements to which the mob is completely immune.
+    #If an element of this type is detected on the player's equipment, the damage is canceled.
+    immunities:
+      - WATER
